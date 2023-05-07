@@ -3,6 +3,8 @@ import { TidalEvent, fetchSample } from "../services/data-fetch";
 import { RenderConditionally } from "./RenderConditionally";
 import { HorizontalLevel } from "./HorizontalLevel";
 import { VerticalMarker } from "./VerticalMarker";
+import { TideLevelBar, TideLevelBarChart } from "./TideLevelBarChart";
+import { PositionRelative } from "./PositionRelative";
 
 const today = new Date("2023-01-02T11:30:00.000+0900");
 
@@ -76,50 +78,23 @@ export const TideLevelWindow = () => {
       <h2>{dateStamp}</h2>
       <main>
         <RenderConditionally when={!!hourlyEvents.length}>
-          <div style={{ position: "relative", paddingTop: "2em" }}>
-            <ul
-              style={{
-                display: "flex",
-                alignItems: "flex-end",
-                paddingInlineStart: "0",
-                gap: "1px",
-                margin: 0,
-              }}
-            >
-              {hourlyEvents.map((event) => (
-                <li
-                  key={event.timeStamp}
-                  style={{
-                    width: "20px",
-                    height: `${event.level * 2}px`,
-                    backgroundColor: colorRange[reverseIndex[event.level]],
-                    listStyle: "none",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "100%",
-                      textAlign: "center",
-                      fontSize: "0.5em",
-                      color: "white",
-                      opacity: 1,
-                    }}
-                  >
-                    {event.level}
-                  </div>
-                </li>
+          <PositionRelative>
+            <TideLevelBarChart>
+              {hourlyEvents.map(({ level, timeStamp }) => (
+                <TideLevelBar
+                  key={timeStamp}
+                  level={level}
+                  color={colorRange[reverseIndex[level]]}
+                />
               ))}
-            </ul>
+            </TideLevelBarChart>
             <RenderConditionally when={!!otherEvents.length}>
               {otherEvents.map((event) => (
                 <HorizontalLevel key={event.timeStamp} {...event} />
               ))}
             </RenderConditionally>
             <VerticalMarker />
-          </div>
+          </PositionRelative>
         </RenderConditionally>
       </main>
     </>

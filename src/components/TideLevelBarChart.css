@@ -1,0 +1,22 @@
+.tide-level-bar {
+  width: 20px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.tide-level-bar_label {
+  width: 100%;
+  text-align: center;
+  font-size: 0.5em;
+  color: white;
+}
+
+.tide-level-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  padding: 0;
+  gap: 1px;
+  padding-top: 2em;
+}
