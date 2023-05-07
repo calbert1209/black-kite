@@ -1,12 +1,10 @@
-import { useEffect, useMemo, useState } from "preact/hooks";
-import { TidalEvent, fetchData } from "../services/data-fetch";
+import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
+import { TidalChart, TidalEvent, fetchData } from "../services/data-fetch";
 import { RenderConditionally } from "./RenderConditionally";
 import { HorizontalLevel } from "./HorizontalLevel";
 import { VerticalMarker } from "./VerticalMarker";
 import { TideLevelBar, TideLevelBarChart } from "./TideLevelBarChart";
 import { PositionRelative } from "./PositionRelative";
-
-const today = new Date("2023-01-02T11:30:00.000+0900");
 
 const leadingZeros = (n: number | string, digits: number) => {
   return `${n}`.padStart(digits, "0");
@@ -50,16 +48,16 @@ const createReverseIndex = (events: TidalEvent[]) => {
 };
 
 export const TideLevelWindow = () => {
+  // const [yearlyData, setYearlyData] = useState<TidalChart | null>(null);
   const [hourlyEvents, setHourlyEvents] = useState<TidalEvent[]>([]);
   const [otherEvents, setOtherEvents] = useState<TidalEvent[]>([]);
   const [reverseIndex, setReverseIndex] = useState<Record<number, number>>({});
 
-  const dateStamp = useMemo(() => createDateStamp(new Date()), []);
-  useEffect(() => {
-    fetchData('./2023-shonanko.json', (chart) => {
+  const setEventsForDay = useCallback(
+    (yearlyData: TidalChart, dateStamp: string) => {
       const hourlyEvents: TidalEvent[] = [];
       const extremityEvents: TidalEvent[] = [];
-      for (const event of chart[dateStamp]) {
+      for (const event of yearlyData[dateStamp]) {
         if (event.type === "hourly") {
           hourlyEvents.push(event);
         } else {
@@ -70,6 +68,15 @@ export const TideLevelWindow = () => {
       setOtherEvents(extremityEvents);
       const index = createReverseIndex(hourlyEvents);
       setReverseIndex(index);
+    },
+    []
+  );
+
+  const dateStamp = useMemo(() => createDateStamp(new Date()), []);
+  useEffect(() => {
+    fetchData("./2023-shonanko.json", (chart) => {
+      // setYearlyData(chart);
+      setEventsForDay(chart, dateStamp);
     });
   }, []);
 

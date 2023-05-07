@@ -6,7 +6,7 @@ export type TidalEvent = {
   type: TidalEventType 
 }
 
-type TidalChart = Record<string, TidalEvent[]>
+export type TidalChart = Record<string, TidalEvent[]>
 
 export const fetchData = async (url: string, onFetch: (chart: TidalChart) => void) => {
   const resp = await window.fetch(url)
