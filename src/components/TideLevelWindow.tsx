@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "preact/hooks";
-import { TidalEvent, fetchSample } from "../services/data-fetch";
+import { TidalEvent, fetchData } from "../services/data-fetch";
 import { RenderConditionally } from "./RenderConditionally";
 import { HorizontalLevel } from "./HorizontalLevel";
 import { VerticalMarker } from "./VerticalMarker";
@@ -54,9 +54,9 @@ export const TideLevelWindow = () => {
   const [otherEvents, setOtherEvents] = useState<TidalEvent[]>([]);
   const [reverseIndex, setReverseIndex] = useState<Record<number, number>>({});
 
-  const dateStamp = useMemo(() => createDateStamp(today), [today]);
+  const dateStamp = useMemo(() => createDateStamp(new Date()), []);
   useEffect(() => {
-    fetchSample((chart) => {
+    fetchData('./2023-shonanko.json', (chart) => {
       const hourlyEvents: TidalEvent[] = [];
       const extremityEvents: TidalEvent[] = [];
       for (const event of chart[dateStamp]) {

@@ -8,8 +8,8 @@ export type TidalEvent = {
 
 type TidalChart = Record<string, TidalEvent[]>
 
-export const fetchSample = async (onFetch: (chart: TidalChart) => void) => {
-  const resp = await window.fetch('./3-day-sample.json')
+export const fetchData = async (url: string, onFetch: (chart: TidalChart) => void) => {
+  const resp = await window.fetch(url)
   const json: TidalChart = await resp.json();
   onFetch(json);
 }
