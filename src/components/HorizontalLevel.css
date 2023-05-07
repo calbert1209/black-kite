@@ -1,0 +1,37 @@
+.horizontal-level_outer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.horizontal-level_upper {
+  width: 100%;
+  flex-grow: 1;
+}
+
+.horizontal-level_middle {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  font-size: 0.8em;
+  line-height: 1em;
+}
+
+.horizontal-level_middle_line {
+  flex-grow: 1;
+  height: 1em;
+  border-bottom: 1px dotted;
+}
+
+.horizontal-level_label {
+  margin-left: 4px;
+  text-shadow: 0 0 2px white;
+}
+
+.horizontal-level_lower {
+  width: 100%;
+}
