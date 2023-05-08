@@ -5,6 +5,7 @@ import { HorizontalLevel } from "./HorizontalLevel";
 import { VerticalMarker } from "./VerticalMarker";
 import { TideLevelBar, TideLevelBarChart } from "./TideLevelBarChart";
 import { PositionRelative } from "./PositionRelative";
+import { decrementDay, incrementDay } from "../lib/dates";
 
 const leadingZeros = (n: number | string, digits: number) => {
   return `${n}`.padStart(digits, "0");
@@ -48,10 +49,11 @@ const createReverseIndex = (events: TidalEvent[]) => {
 };
 
 export const TideLevelWindow = () => {
-  // const [yearlyData, setYearlyData] = useState<TidalChart | null>(null);
+  const [yearlyData, setYearlyData] = useState<TidalChart | null>(null);
   const [hourlyEvents, setHourlyEvents] = useState<TidalEvent[]>([]);
   const [otherEvents, setOtherEvents] = useState<TidalEvent[]>([]);
   const [reverseIndex, setReverseIndex] = useState<Record<number, number>>({});
+  const [currentDate, setCurrentDate] = useState(() => new Date());
 
   const setEventsForDay = useCallback(
     (yearlyData: TidalChart, dateStamp: string) => {
@@ -72,13 +74,19 @@ export const TideLevelWindow = () => {
     []
   );
 
-  const dateStamp = useMemo(() => createDateStamp(new Date()), []);
+  const dateStamp = useMemo(() => createDateStamp(currentDate), [currentDate]);
   useEffect(() => {
     fetchData("./2023-shonanko.json", (chart) => {
-      // setYearlyData(chart);
+      setYearlyData(chart);
       setEventsForDay(chart, dateStamp);
     });
   }, []);
+
+  useEffect(() => {
+    if (!yearlyData) return;
+
+    setEventsForDay(yearlyData, dateStamp);
+  }, [dateStamp])
 
   return (
     <>
@@ -103,6 +111,9 @@ export const TideLevelWindow = () => {
             <VerticalMarker />
           </PositionRelative>
         </RenderConditionally>
+        <button role="button" onClick={() => setCurrentDate(s => decrementDay(s))}>-</button>
+        <button role="button" onClick={() => setCurrentDate(new Date())}>today</button>
+        <button role="button" onClick={() => setCurrentDate(s => incrementDay(s))}>+</button>
       </main>
     </>
   );
