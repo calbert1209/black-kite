@@ -114,6 +114,9 @@ export const TideLevelWindow = () => {
                 />
               ))}
             </TideLevelBarChart>
+            <RenderConditionally when={isToday(currentDate)}>
+              <VerticalMarker />
+            </RenderConditionally>
             <RenderConditionally when={!!highEvents.length}>
               {highEvents.map((event, index) => (
                 <HorizontalLevel
