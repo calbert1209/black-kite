@@ -103,12 +103,13 @@ export const TideLevelWindow = () => {
                 />
               ))}
             </TideLevelBarChart>
+            <VerticalMarker />
             <RenderConditionally when={!!otherEvents.length}>
               {otherEvents.map((event) => (
                 <HorizontalLevel key={event.timeStamp} {...event} />
               ))}
             </RenderConditionally>
-            <VerticalMarker />
+            
           </PositionRelative>
         </RenderConditionally>
         <button role="button" onClick={() => setCurrentDate(s => decrementDay(s))}>-</button>
