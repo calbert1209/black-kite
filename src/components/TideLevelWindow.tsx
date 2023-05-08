@@ -5,7 +5,7 @@ import { HorizontalLevel } from "./HorizontalLevel";
 import { VerticalMarker } from "./VerticalMarker";
 import { TideLevelBar, TideLevelBarChart } from "./TideLevelBarChart";
 import { PositionRelative } from "./PositionRelative";
-import { decrementDay, incrementDay } from "../lib/dates";
+import { subtractDay, addDay, isToday } from "../lib/dates";
 
 const leadingZeros = (n: number | string, digits: number) => {
   return `${n}`.padStart(digits, "0");
@@ -52,6 +52,13 @@ export const TideLevelWindow = () => {
   const [yearlyData, setYearlyData] = useState<TidalChart | null>(null);
   const [currentDate, setCurrentDate] = useState(() => new Date());
 
+  const decrementDate = useCallback(
+    () => setCurrentDate((s) => subtractDay(s)),
+    []
+  );
+  const incrementDate = useCallback(() => setCurrentDate((s) => addDay(s)), []);
+  const setToToday = useCallback(() => setCurrentDate(new Date()), []);
+
   const dateStamp = useMemo(() => createDateStamp(currentDate), [currentDate]);
   useEffect(() => {
     fetchData("./2023-shonanko.json", (chart) => {
@@ -59,11 +66,12 @@ export const TideLevelWindow = () => {
     });
   }, []);
 
-  const { hourlyEvents, extremityEvents, reverseIndex } = useMemo(() => {
+  const { hourlyEvents, highEvents, lowEvents, reverseIndex } = useMemo(() => {
     if (!yearlyData) {
       return {
-        hourlyEvents: [],
-        extremityEvents: [],
+        hourlyEvents: [] as TidalEvent[],
+        highEvents: [] as TidalEvent[],
+        lowEvents: [] as TidalEvent[],
         reverseIndex: {} as Record<number, number>,
       };
     }
@@ -74,7 +82,7 @@ export const TideLevelWindow = () => {
     for (const event of yearlyData[dateStamp]) {
       if (event.type === "hourly") {
         hourlyEvents.push(event);
-      } else if (event.type === "high") {
+      } else if (event.type === 'high') {
         highEvents.push(event);
       } else {
         lowEvents.push(event);
@@ -85,7 +93,8 @@ export const TideLevelWindow = () => {
 
     return {
       hourlyEvents,
-      extremityEvents: [...highEvents, ...lowEvents],
+      highEvents,
+      lowEvents,
       reverseIndex,
     };
   }, [yearlyData, currentDate]);
@@ -105,27 +114,33 @@ export const TideLevelWindow = () => {
                 />
               ))}
             </TideLevelBarChart>
-            <VerticalMarker />
-            <RenderConditionally when={!!extremityEvents.length}>
-              {extremityEvents.map((event) => (
-                <HorizontalLevel key={event.timeStamp} {...event} />
+            <RenderConditionally when={!!highEvents.length}>
+              {highEvents.map((event, index) => (
+                <HorizontalLevel
+                  key={event.timeStamp}
+                  {...event}
+                  reversed={index % 2 === 0}
+                />
+              ))}
+            </RenderConditionally>
+            <RenderConditionally when={!!lowEvents.length}>
+              {lowEvents.map((event, index) => (
+                <HorizontalLevel
+                  key={event.timeStamp}
+                  {...event}
+                  reversed={index % 2 === 0}
+                />
               ))}
             </RenderConditionally>
           </PositionRelative>
         </RenderConditionally>
-        <button
-          role="button"
-          onClick={() => setCurrentDate((s) => decrementDay(s))}
-        >
+        <button role="button" onClick={decrementDate}>
           -
         </button>
-        <button role="button" onClick={() => setCurrentDate(new Date())}>
+        <button role="button" onClick={setToToday}>
           today
         </button>
-        <button
-          role="button"
-          onClick={() => setCurrentDate((s) => incrementDay(s))}
-        >
+        <button role="button" onClick={incrementDate}>
           +
         </button>
       </main>

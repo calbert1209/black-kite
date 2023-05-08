@@ -21,6 +21,10 @@
   line-height: 1em;
 }
 
+.horizontal-level_middle[data-reversed="true"] {
+  flex-direction: row-reverse;
+}
+
 .horizontal-level_middle_line {
   flex-grow: 1;
   height: 1em;
