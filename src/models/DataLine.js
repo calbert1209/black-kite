@@ -1,4 +1,4 @@
-const { TidalEvent } = require("./TidalEvent");
+const { TidalEvent } = require("./TidalEvent/TidalEvent");
 
 /**
  * 　毎時潮位データ	：	　１～　７２カラム	　３桁×２４時間（０時から２３時）
