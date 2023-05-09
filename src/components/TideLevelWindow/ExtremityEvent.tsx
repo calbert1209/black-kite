@@ -9,11 +9,13 @@ const ExtremityEvent = ({ type, level, timeStamp }: TidalEvent) => (
       type === "high" ? "extremity-event--high" : "extremity-event--low"
     }
   >
-    <Row gap={"4px"}>
+    <Row gap={"4px"} className="extremity-event_primary-row">
       <div>{type === "high" ? "▲" : "▼"}</div>
       <div>{level}</div>
     </Row>
-    <div>{timeStamp.substring(11, 16)}</div>
+    <div className="extremity-event_secondary-row">
+      {timeStamp.substring(11, 16)}
+    </div>
   </Column>
 );
 

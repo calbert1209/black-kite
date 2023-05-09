@@ -5,3 +5,12 @@
 .extremity-event--low {
   color: rgb(76, 183, 127);
 }
+
+.extremity-event_primary-row {
+  font-weight: 700;
+  font-size: calc(14 / 16 * 1rem);
+}
+
+.extremity-event_secondary-row {
+  font-size: calc(14 / 16 * 1rem);
+}
