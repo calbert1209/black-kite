@@ -1,4 +1,10 @@
+import { compareAsc } from "../../lib/dates";
 import { TidalEvent } from "../../services/data-fetch";
+
+const orderByTimeStampAsc = (events: TidalEvent[]) =>
+  events
+    .map<[Date, TidalEvent]>((event) => [new Date(event.timeStamp), event])
+    .sort((a, b) => compareAsc(a[0], b[0])).map(([_, event]) => event);
 
 export const createReverseIndex = (events: TidalEvent[]) => {
   const sortedByLevel = [...events].sort((a, b) => a.level - b.level);
@@ -19,7 +25,7 @@ export const collateDailyTidalEvents = (events: TidalEvent[]) => {
   for (const event of events) {
     if (event.type === "hourly") {
       hourlyEvents.push(event);
-    } else if (event.type === 'high') {
+    } else if (event.type === "high") {
       highEvents.push(event);
     } else {
       lowEvents.push(event);
@@ -28,10 +34,13 @@ export const collateDailyTidalEvents = (events: TidalEvent[]) => {
 
   const reverseIndex = createReverseIndex(hourlyEvents);
 
+  const extremityEvents = orderByTimeStampAsc([...highEvents, ...lowEvents]);
+
   return {
     hourlyEvents,
     highEvents,
     lowEvents,
     reverseIndex,
+    extremityEvents,
   };
-}
+};

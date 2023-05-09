@@ -18,7 +18,7 @@ export const useTideLevelWindowState = (tidalChart: TidalChart) => {
   const incrementDate = useCallback(() => setCurrentDate((s) => addDay(s)), []);
   const setToToday = useCallback(() => setCurrentDate(new Date()), []);
 
-  const { hourlyEvents, highEvents, lowEvents, reverseIndex } = useMemo(
+  const { hourlyEvents, highEvents, lowEvents, reverseIndex, extremityEvents } = useMemo(
     () => collateDailyTidalEvents(tidalChart[dateStamp]),
     [tidalChart, currentDate]
   );
@@ -28,6 +28,7 @@ export const useTideLevelWindowState = (tidalChart: TidalChart) => {
     hourlyEvents,
     highEvents,
     lowEvents,
+    extremityEvents,
     reverseIndex,
     isTodaySelected,
     decrementDate,
