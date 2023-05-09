@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
-import { TidalChart, TidalEvent, fetchData } from "../services/data-fetch";
-import { RenderConditionally } from "./RenderConditionally";
-import { HorizontalLevel } from "./HorizontalLevel";
-import { VerticalMarker } from "./VerticalMarker";
+import { TidalChart, TidalEvent, fetchData } from "../../services/data-fetch";
+import { RenderConditionally } from "./../RenderConditionally";
+import { HorizontalLevel } from "./../HorizontalLevel";
+import { VerticalMarker } from "./../VerticalMarker";
 import { TideLevelBar, TideLevelBarChart } from "./TideLevelBarChart";
-import { PositionRelative } from "./PositionRelative";
-import { subtractDay, addDay, isToday } from "../lib/dates";
+import { PositionRelative } from "./../PositionRelative";
+import { subtractDay, addDay, isToday } from "../../lib/dates";
 
 const leadingZeros = (n: number | string, digits: number) => {
   return `${n}`.padStart(digits, "0");
