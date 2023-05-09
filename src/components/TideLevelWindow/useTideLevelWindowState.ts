@@ -1,11 +1,14 @@
 import { useCallback, useMemo, useState } from "preact/hooks";
 import { addDay, isToday, subtractDay, format } from "../../lib/dates";
 import { collateDailyTidalEvents } from "../../models/TidalEvent/helpers";
-import { TidalChart, TidalEvent } from "../../services/data-fetch";
+import { TidalChart } from "../../services/data-fetch";
 
-export const useTideLevelWindowState = (tidalChart: TidalChart | null) => {
+export const useTideLevelWindowState = (tidalChart: TidalChart) => {
   const [currentDate, setCurrentDate] = useState(() => new Date());
-  const dateStamp = useMemo(() => format(currentDate, 'yyyy-MM-dd'), [currentDate]);
+  const dateStamp = useMemo(
+    () => format(currentDate, "yyyy-MM-dd"),
+    [currentDate]
+  );
   const isTodaySelected = useMemo(() => isToday(currentDate), [currentDate]);
 
   const decrementDate = useCallback(
@@ -16,17 +19,7 @@ export const useTideLevelWindowState = (tidalChart: TidalChart | null) => {
   const setToToday = useCallback(() => setCurrentDate(new Date()), []);
 
   const { hourlyEvents, highEvents, lowEvents, reverseIndex } = useMemo(
-    () => {
-      if (!tidalChart) {
-        return {
-          hourlyEvents: [] as TidalEvent[],
-          highEvents: [] as TidalEvent[],
-          lowEvents: [] as TidalEvent[],
-          reverseIndex: {} as Record<number, number>,
-        };
-      }
-      return collateDailyTidalEvents(tidalChart[dateStamp]);
-    },
+    () => collateDailyTidalEvents(tidalChart[dateStamp]),
     [tidalChart, currentDate]
   );
 
@@ -40,5 +33,5 @@ export const useTideLevelWindowState = (tidalChart: TidalChart | null) => {
     decrementDate,
     incrementDate,
     setToToday,
-  }
+  };
 };

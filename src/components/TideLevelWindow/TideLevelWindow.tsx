@@ -1,5 +1,4 @@
-import { useEffect, useState } from "preact/hooks";
-import { TidalChart, fetchData } from "../../services/data-fetch";
+import { TidalChart } from "../../services/data-fetch";
 import { RenderConditionally } from "./../RenderConditionally";
 import { HorizontalLevel } from "./../HorizontalLevel";
 import { VerticalMarker } from "./../VerticalMarker";
@@ -8,15 +7,11 @@ import { PositionRelative } from "./../PositionRelative";
 import { colorRange } from "../../ui";
 import { useTideLevelWindowState } from "./useTideLevelWindowState";
 
-export const TideLevelWindow = () => {
-  const [yearlyData, setYearlyData] = useState<TidalChart | null>(null);
+type Props = {
+  tidalChart: TidalChart;
+};
 
-  useEffect(() => {
-    fetchData("./2023-shonanko.json", (chart) => {
-      setYearlyData(chart);
-    });
-  }, []);
-
+export const TideLevelWindow = ({ tidalChart }: Props) => {
   const {
     dateStamp,
     hourlyEvents,
@@ -27,7 +22,7 @@ export const TideLevelWindow = () => {
     decrementDate,
     incrementDate,
     setToToday,
-  } = useTideLevelWindowState(yearlyData);
+  } = useTideLevelWindowState(tidalChart);
 
   return (
     <>
