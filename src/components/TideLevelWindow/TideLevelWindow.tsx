@@ -1,55 +1,33 @@
-import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
-import { TidalChart, TidalEvent, fetchData } from "../../services/data-fetch";
+import { useEffect, useState } from "preact/hooks";
+import { TidalChart, fetchData } from "../../services/data-fetch";
 import { RenderConditionally } from "./../RenderConditionally";
 import { HorizontalLevel } from "./../HorizontalLevel";
 import { VerticalMarker } from "./../VerticalMarker";
 import { TideLevelBar, TideLevelBarChart } from "./TideLevelBarChart";
 import { PositionRelative } from "./../PositionRelative";
-import { subtractDay, addDay, isToday } from "../../lib/dates";
 import { colorRange } from "../../ui";
-import { collateDailyTidalEvents } from "../../models/TidalEvent/helpers";
-
-const leadingZeros = (n: number | string, digits: number) => {
-  return `${n}`.padStart(digits, "0");
-};
-
-const createDateStamp = (d: Date) => {
-  const year = d.getFullYear();
-  const month = leadingZeros(d.getMonth() + 1, 2);
-  const date = leadingZeros(d.getDate(), 2);
-  return [year, month, date].join("-");
-};
+import { useTideLevelWindowState } from "./useTideLevelWindowState";
 
 export const TideLevelWindow = () => {
   const [yearlyData, setYearlyData] = useState<TidalChart | null>(null);
-  const [currentDate, setCurrentDate] = useState(() => new Date());
 
-  const decrementDate = useCallback(
-    () => setCurrentDate((s) => subtractDay(s)),
-    []
-  );
-  const incrementDate = useCallback(() => setCurrentDate((s) => addDay(s)), []);
-  const setToToday = useCallback(() => setCurrentDate(new Date()), []);
-
-  const dateStamp = useMemo(() => createDateStamp(currentDate), [currentDate]);
   useEffect(() => {
     fetchData("./2023-shonanko.json", (chart) => {
       setYearlyData(chart);
     });
   }, []);
 
-  const { hourlyEvents, highEvents, lowEvents, reverseIndex } = useMemo(() => {
-    if (!yearlyData) {
-      return {
-        hourlyEvents: [] as TidalEvent[],
-        highEvents: [] as TidalEvent[],
-        lowEvents: [] as TidalEvent[],
-        reverseIndex: {} as Record<number, number>,
-      };
-    }
-
-    return collateDailyTidalEvents(yearlyData[dateStamp]);
-  }, [yearlyData, currentDate]);
+  const {
+    dateStamp,
+    hourlyEvents,
+    highEvents,
+    lowEvents,
+    reverseIndex,
+    isTodaySelected,
+    decrementDate,
+    incrementDate,
+    setToToday,
+  } = useTideLevelWindowState(yearlyData);
 
   return (
     <>
@@ -66,7 +44,7 @@ export const TideLevelWindow = () => {
                 />
               ))}
             </TideLevelBarChart>
-            <RenderConditionally when={isToday(currentDate)}>
+            <RenderConditionally when={isTodaySelected}>
               <VerticalMarker />
             </RenderConditionally>
             <RenderConditionally when={!!highEvents.length}>
