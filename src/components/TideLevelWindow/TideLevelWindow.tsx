@@ -6,6 +6,8 @@ import { colorRange } from "../../ui";
 import { useTideLevelWindowState } from "./useTideLevelWindowState";
 import { Row, PositionRelative } from "../../ui/components";
 import { ExtremityEventList } from "./ExtremityEvent";
+import { DateButtonGroup } from "./DateButtonGroup";
+import "./TideLevelWindow.css";
 
 type Props = {
   tidalChart: TidalChart;
@@ -28,7 +30,7 @@ export const TideLevelWindow = ({ tidalChart }: Props) => {
       <h2>{dateStamp}</h2>
       <main>
         <RenderConditionally when={!!hourlyEvents.length}>
-          <Row gap={"32px"} align="flex-end">
+          <Row className="tide-level-window_row" gap={"32px"} align="flex-end">
             <PositionRelative>
               <TideLevelBarChart>
                 {hourlyEvents.map(({ level, timeStamp }) => (
@@ -46,15 +48,7 @@ export const TideLevelWindow = ({ tidalChart }: Props) => {
             <ExtremityEventList events={extremityEvents} />
           </Row>
         </RenderConditionally>
-        <button role="button" onClick={decrementDate}>
-          &lt;
-        </button>
-        <button role="button" onClick={setToToday}>
-          today
-        </button>
-        <button role="button" onClick={incrementDate}>
-          &gt;
-        </button>
+        <DateButtonGroup {...{ decrementDate, incrementDate, setToToday }} />
       </main>
     </>
   );
