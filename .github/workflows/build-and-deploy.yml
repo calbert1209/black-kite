@@ -13,17 +13,17 @@ jobs:
           node-version: 16.x
 
       - name: Install via Yarn 🧶
-        uses: borales/actions-yarn@v4
+        uses: borales/actions-yarn@v4.2.0
         with:
           cmd: install
 
       - name: Build via Yarn 📦
-        uses: borales/actions-yarn@v4
+        uses: borales/actions-yarn@v4.2.0
         with:
           cmd: build
 
       - name: Deploy 🏗
-        uses: JamesIves/github-pages-deploy-action@4
+        uses: JamesIves/github-pages-deploy-action@4.4.1
         with:
           branch: gh-pages
           folder: dist
