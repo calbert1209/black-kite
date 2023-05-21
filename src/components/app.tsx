@@ -1,11 +1,19 @@
 import { useEffect, useState } from "preact/hooks";
 import "./app.css";
 import { TideLevelWindow } from "./TideLevelWindow/TideLevelWindow";
-import { TidalChart, fetchData } from "../services/data-fetch";
+import {
+  LunarChart,
+  TidalChart,
+  fetchLunarData,
+  fetchTidalData,
+} from "../services/data-fetch";
 import { useAppState } from "./useAppState";
+import { DateButtonGroup } from "./TideLevelWindow/DateButtonGroup";
+import { LunarPositionWindow } from "./LunarPositionWindow/LunarPositionWindow";
 
 export function App() {
   const [tidalChart, setTidalChart] = useState<TidalChart | null>(null);
+  const [lunarChart, setLunarChart] = useState<LunarChart | null>(null);
 
   const {
     dateStamp,
@@ -16,25 +24,35 @@ export function App() {
   } = useAppState();
 
   useEffect(() => {
-    fetchData("./2023-shonanko.json", (chart) => {
+    fetchTidalData("./2023-shonanko.json", (chart) => {
       setTidalChart(chart);
     });
   }, []);
 
-  if (!tidalChart) {
-    return <div>loading...</div>;
-  }
+  useEffect(() => {
+    fetchLunarData("./2023-shonanko-horizons.json", (chart) => {
+      setLunarChart(chart);
+    });
+  }, []);
 
   return (
-    <TideLevelWindow
-      tidalChart={tidalChart}
-      {...{
-        dateStamp,
-        isTodaySelected,
-        decrementDate,
-        incrementDate,
-        setToToday,
-      }}
-    />
+    <>
+      <h2>{dateStamp}</h2>
+      {lunarChart ? (
+        <LunarPositionWindow chart={lunarChart} dateStamp={dateStamp} />
+      ) : (
+        <div>loading...</div>
+      )}
+      {tidalChart ? (
+        <TideLevelWindow
+          tidalChart={tidalChart}
+          dateStamp={dateStamp}
+          isTodaySelected={isTodaySelected}
+        />
+      ) : (
+        <div>loading...</div>
+      )}
+      <DateButtonGroup {...{ decrementDate, incrementDate, setToToday }} />
+    </>
   );
 }
