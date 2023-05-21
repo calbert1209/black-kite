@@ -11,19 +11,23 @@ import "./TideLevelWindow.css";
 
 type Props = {
   tidalChart: TidalChart;
+  isTodaySelected: boolean;
+  decrementDate: () => void;
+  incrementDate: () => void;
+  setToToday: () => void;
+  dateStamp: string;
 };
 
-export const TideLevelWindow = ({ tidalChart }: Props) => {
-  const {
-    dateStamp,
-    hourlyEvents,
-    reverseIndex,
-    isTodaySelected,
-    extremityEvents,
-    decrementDate,
-    incrementDate,
-    setToToday,
-  } = useTideLevelWindowState(tidalChart);
+export const TideLevelWindow = ({
+  tidalChart,
+  isTodaySelected,
+  decrementDate,
+  incrementDate,
+  setToToday,
+  dateStamp,
+}: Props) => {
+  const { hourlyEvents, reverseIndex, extremityEvents } =
+    useTideLevelWindowState(tidalChart, dateStamp);
 
   return (
     <>
