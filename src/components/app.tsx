@@ -30,7 +30,7 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    fetchLunarData("./2023-shonanko-horizons.json", (chart) => {
+    fetchLunarData("./2023-shonanko-horizons-svs.json", (chart) => {
       setLunarChart(chart);
     });
   }, []);

@@ -1,6 +1,5 @@
-import { useMemo, useState } from "preact/hooks";
 import { LunarChart } from "../../services/data-fetch";
-import { format } from "../../lib/dates";
+import { MoonIcon } from "../MoonIcon/MoonIcon";
 
 const chartWidth = 503;
 const barWidth = (chartWidth - 23 * 1) / 24;
@@ -17,18 +16,16 @@ export const LunarPositionWindow = ({ chart, dateStamp }: Props) => {
       xmlns="http://www.w3.org/2000/svg"
       fill="tomato"
     >
-      {chart[dateStamp].map(({ localDate, elevation }, index) => {
-        const absValue = Math.abs(elevation * 2);
-        return (
-          <rect
-            key={localDate}
-            width={barWidth}
-            height={absValue}
-            x={index * (barWidth + 1)}
-            y={elevation >= 0 ? 200 - absValue : 200}
-          />
-        );
-      })}
+      <rect x="0" y="200" height="1" width={chartWidth} fill="lightgrey" />
+      {chart[dateStamp].map(({ localDate, elevation, age }, index) => (
+        <MoonIcon
+          key={localDate}
+          age={age ?? 0}
+          x={index * (barWidth + 1)}
+          y={200 - elevation * 2}
+          disabled={elevation <= 0}
+        />
+      ))}
     </svg>
   );
 };
