@@ -1,16 +1,16 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import { readSvsMoonInfoSync } from "./read-svs-moon-info.js";
 
 const scriptDirPath = path.dirname(fileURLToPath(import.meta.url));
-const dataDirPath = path.resolve(scriptDirPath, '..', 'data');
-const inputFilePath = path.resolve(
-  dataDirPath,
-  "2023-shonanko-horizons.txt"
-);
+const dataDirPath = path.resolve(scriptDirPath, "..", "data");
+const inputFilePath = path.resolve(dataDirPath, "2023-shonanko-horizons.txt");
 
 const data = fs.readFileSync(inputFilePath);
 const lines = data.toString().split("\n");
+
+const svsInfo = readSvsMoonInfoSync();
 
 /**
  * strip out csv table from response
@@ -47,12 +47,14 @@ function parseLine(line) {
     .split(",")
     .map((part) => part.trim());
   const parsedDateTime = parseDate(datePart);
+  const svsMoonInfo = svsInfo[parsedDateTime] ?? {};
   return {
     utcDate: parsedDateTime,
     localDate: zonedDateString(parsedDateTime, 9),
     azimuth: parseFloat(azimuth),
     elevation: parseFloat(elevation),
     phi: parseFloat(phi),
+    ...svsMoonInfo,
   };
 }
 
@@ -130,7 +132,7 @@ function zonedDateString(utcDateString, timeOffset) {
 const parsedLines = getCsvLines(lines).map(parseLine);
 
 const collatedLines = parsedLines.reduce((agg, line) => {
-  const [key] = line.localDate.split('T');
+  const [key] = line.localDate.split("T");
   if (!Array.isArray(agg[key])) {
     agg[key] = [];
   }
@@ -140,5 +142,8 @@ const collatedLines = parsedLines.reduce((agg, line) => {
   return agg;
 }, {});
 
-const outputFilePath = path.resolve(dataDirPath, '2023-shonanko-horizons.json') ;
+const outputFilePath = path.resolve(
+  dataDirPath,
+  "2023-shonanko-horizons-svs.json"
+);
 fs.writeFileSync(outputFilePath, JSON.stringify(collatedLines, null, 2));
