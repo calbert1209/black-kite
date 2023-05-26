@@ -38,6 +38,7 @@ export function App() {
   return (
     <>
       <h2>{dateStamp}</h2>
+      <DateButtonGroup {...{ decrementDate, incrementDate, setToToday }} />
       {lunarChart ? (
         <LunarPositionWindow chart={lunarChart} dateStamp={dateStamp} />
       ) : (
@@ -52,7 +53,6 @@ export function App() {
       ) : (
         <div>loading...</div>
       )}
-      <DateButtonGroup {...{ decrementDate, incrementDate, setToToday }} />
     </>
   );
 }
