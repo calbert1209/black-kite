@@ -1,0 +1,16 @@
+{
+"image": "mcr.microsoft.com/devcontainers/typescript-node:0-20",
+"customizations": {
+	"vscode": {
+		"extensions": [
+			"clement-vidal-vscode.terminal-presets",
+			"jock.svg",
+			"esbenp.prettier-vscode",
+			"eamodio.gitlens",
+			"alefragnani.Bookmarks",
+			"uloco.theme-bluloco-dark",
+			"dbaeumer.vscode-eslint"
+		]
+	}
+}
+}
