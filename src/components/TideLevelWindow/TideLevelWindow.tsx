@@ -29,10 +29,8 @@ export const TideLevelWindow = ({
             <TideLevelBarChart
               events={hourlyEvents}
               reverseIndex={reverseIndex}
+              showTimeMarker={isTodaySelected}
             />
-            <RenderConditionally when={isTodaySelected}>
-              <VerticalMarker />
-            </RenderConditionally>
           </PositionRelative>
           <ExtremityEventList events={extremityEvents} />
         </Row>
