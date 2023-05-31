@@ -3,9 +3,6 @@ import { TidalEvent } from "../../services/data-fetch";
 import { colorRange } from "../../ui";
 import { RenderConditionally } from "../../ui/components";
 
-const kScaleY = 2;
-const kVerticalOffset = 350;
-
 const percentOfMinutesPast = () => {
   const now = new Date();
   const hours = now.getHours();
@@ -29,13 +26,16 @@ const TimeMarker = () => {
       window.clearInterval(timer.current);
     };
   }, []);
+  const scaleY = window.innerHeight > 800 ? 2 : 1;
+  const chartHeight = scaleY * 200;
+  const verticalOffset = chartHeight * 0.8725;
 
   return (
     <rect
       x={`${percent}%`}
       y="0"
       width="1"
-      height={kVerticalOffset}
+      height={verticalOffset}
       fill="red"
     />
   );
@@ -52,12 +52,16 @@ export const TideLevelBarChart = ({
   reverseIndex,
   showTimeMarker = false,
 }: ChartProps) => {
+  const scaleY = window.innerHeight > 800 ? 2 : 1;
+  const chartHeight = scaleY * 200;
   const chartWidth = Math.min(window.innerWidth * 0.8, 504);
   const barWidth = (chartWidth - 23 * 1) / 24;
 
+  const verticalOffset = chartHeight * 0.8725;
+
   return (
     <svg
-      viewBox={`0 0 ${chartWidth} 400`}
+      viewBox={`0 0 ${chartWidth} ${chartHeight}`}
       xmlns="http://www.w3.org/2000/svg"
       width={chartWidth}
     >
@@ -65,9 +69,9 @@ export const TideLevelBarChart = ({
         <rect
           key={timeStamp}
           x={i * (barWidth + 1)}
-          y={level >= 0 ? kVerticalOffset - level * kScaleY : kVerticalOffset}
+          y={level >= 0 ? verticalOffset - level * scaleY : verticalOffset}
           width={barWidth}
-          height={Math.abs(level * kScaleY)}
+          height={Math.abs(level * scaleY)}
           fill={colorRange[reverseIndex[level]]}
         />
       ))}
