@@ -24,9 +24,9 @@ type Props = {
 };
 
 export const ExtremityEventList = ({ events }: Props) => (
-  <Column gap={"24px"} justify="flex-end">
+  <div className="extremity-event-list">
     {events.map((event) => (
       <ExtremityEvent key={event.timeStamp} {...event} />
     ))}
-  </Column>
+  </div>
 );

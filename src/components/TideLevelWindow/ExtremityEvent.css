@@ -1,3 +1,19 @@
+.extremity-event-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 24px;
+  margin-bottom: 64px;
+}
+
+@media screen and (max-width: 660px) {
+  .extremity-event-list {
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: initial;
+  }
+}
+
 .extremity-event--high {
   color: rgb(84, 140, 185);
 }

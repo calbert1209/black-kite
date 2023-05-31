@@ -1,9 +1,8 @@
 import { TidalChart } from "../../services/data-fetch";
 import { RenderConditionally } from "../../ui/components/RenderConditionally";
-import { VerticalMarker } from "./../VerticalMarker";
 import { TideLevelBarChart } from "./TideLevelBarChart";
 import { useTideLevelWindowState } from "./useTideLevelWindowState";
-import { Row, PositionRelative } from "../../ui/components";
+import { PositionRelative } from "../../ui/components";
 import { ExtremityEventList } from "./ExtremityEvent";
 import "./TideLevelWindow.css";
 
@@ -24,7 +23,7 @@ export const TideLevelWindow = ({
   return (
     <main>
       <RenderConditionally when={!!hourlyEvents.length}>
-        <Row className="tide-level-window_row" gap={"32px"} align="flex-end">
+        <div className="tide-level-window_flex-box">
           <PositionRelative>
             <TideLevelBarChart
               events={hourlyEvents}
@@ -33,7 +32,7 @@ export const TideLevelWindow = ({
             />
           </PositionRelative>
           <ExtremityEventList events={extremityEvents} />
-        </Row>
+        </div>
       </RenderConditionally>
     </main>
   );
