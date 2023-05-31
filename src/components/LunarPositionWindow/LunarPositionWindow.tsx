@@ -1,3 +1,4 @@
+import { useHourlyChartDimensions } from "../../providers/WindowSizeProvider";
 import { LunarChart } from "../../services/data-fetch";
 import { MoonIcon } from "../MoonIcon/MoonIcon";
 
@@ -6,12 +7,10 @@ type Props = {
   dateStamp: string;
 };
 export const LunarPositionWindow = ({ chart, dateStamp }: Props) => {
-  const scaleY = window.innerHeight > 800 ? 2 : 1;
-  const chartHeight = scaleY * 200;
-  const midpoint = chartHeight / 2;
-  const chartWidth = Math.min(window.innerWidth * 0.8, 504);
-  const barWidth = (chartWidth - 23 * 1) / 24;
+  const { scaleY, chartHeight, chartWidth, barWidth } =
+    useHourlyChartDimensions();
 
+  const midpoint = chartHeight / 2;
   return (
     <svg
       viewBox={`0 0 ${chartWidth} ${chartHeight}`}

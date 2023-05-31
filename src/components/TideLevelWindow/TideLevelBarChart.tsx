@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { TidalEvent } from "../../services/data-fetch";
 import { colorRange } from "../../ui";
 import { RenderConditionally } from "../../ui/components";
+import { useHourlyChartDimensions } from "../../providers/WindowSizeProvider";
 
 const percentOfMinutesPast = () => {
   const now = new Date();
@@ -26,8 +27,8 @@ const TimeMarker = () => {
       window.clearInterval(timer.current);
     };
   }, []);
-  const scaleY = window.innerHeight > 800 ? 2 : 1;
-  const chartHeight = scaleY * 200;
+
+  const { chartHeight } = useHourlyChartDimensions();
   const verticalOffset = chartHeight * 0.8725;
 
   return (
@@ -52,10 +53,8 @@ export const TideLevelBarChart = ({
   reverseIndex,
   showTimeMarker = false,
 }: ChartProps) => {
-  const scaleY = window.innerHeight > 800 ? 2 : 1;
-  const chartHeight = scaleY * 200;
-  const chartWidth = Math.min(window.innerWidth * 0.8, 504);
-  const barWidth = (chartWidth - 23 * 1) / 24;
+  const { scaleY, chartHeight, chartWidth, barWidth } =
+    useHourlyChartDimensions();
 
   const verticalOffset = chartHeight * 0.8725;
 

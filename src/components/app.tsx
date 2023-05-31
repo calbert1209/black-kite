@@ -10,6 +10,7 @@ import {
 import { useAppState } from "./useAppState";
 import { DateButtonGroup } from "./TideLevelWindow/DateButtonGroup";
 import { LunarPositionWindow } from "./LunarPositionWindow/LunarPositionWindow";
+import { WindowSizeProvider } from "../providers/WindowSizeProvider";
 
 export function App() {
   const [tidalChart, setTidalChart] = useState<TidalChart | null>(null);
@@ -36,7 +37,7 @@ export function App() {
   }, []);
 
   return (
-    <>
+    <WindowSizeProvider>
       <h2>{dateStamp}</h2>
       <DateButtonGroup {...{ decrementDate, incrementDate, setToToday }} />
       {lunarChart ? (
@@ -53,6 +54,6 @@ export function App() {
       ) : (
         <div>loading...</div>
       )}
-    </>
+    </WindowSizeProvider>
   );
 }
