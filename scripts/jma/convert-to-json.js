@@ -1,10 +1,10 @@
 const fs = require("fs");
 const path = require("path");
-const { Line } = require("../src/models/DataLine");
+const { Line } = require("../../src/models/DataLine");
 
-const dataDirPath = path.resolve(__dirname, '../data/');
-const txtFilePath = path.join(dataDirPath, '2023-shonanko.txt');
-const jsonFilePath = path.join(dataDirPath, '2023-shonanko.json');
+const dataDirPath = path.resolve(__dirname, "../data/");
+const txtFilePath = path.join(dataDirPath, "2023-shonanko.txt");
+const jsonFilePath = path.join(dataDirPath, "2023-shonanko.json");
 
 const data = fs.readFileSync(txtFilePath);
 const lines = data

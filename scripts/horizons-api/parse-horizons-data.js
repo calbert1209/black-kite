@@ -2,15 +2,16 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readSvsMoonInfoSync } from "./read-svs-moon-info.js";
+import { fetchHorizonsData } from "./fetch-horizons-data.js";
 
 const scriptDirPath = path.dirname(fileURLToPath(import.meta.url));
 const dataDirPath = path.resolve(scriptDirPath, "..", "data");
-const inputFilePath = path.resolve(dataDirPath, "2023-shonanko-horizons.txt");
 
-const data = fs.readFileSync(inputFilePath);
+const data = await fetchHorizonsData(`${year - 1}-12-31`, `${year}-12-31`);
+
 const lines = data.toString().split("\n");
 
-const svsInfo = readSvsMoonInfoSync();
+const svsInfo = readSvsMoonInfoSync(year);
 
 /**
  * strip out csv table from response
