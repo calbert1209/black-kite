@@ -39,10 +39,19 @@ type Props = {
   age: number;
   x?: number;
   y?: number;
+  width?: number;
+  height?: number;
   disabled?: boolean;
 };
 
-export const MoonIcon = ({ age, x = 0, y = 0, disabled = false }: Props) => {
+export const MoonIcon = ({
+  age,
+  x = 0,
+  y = 0,
+  width = 20,
+  height = 20,
+  disabled = false,
+}: Props) => {
   const { lightIris, darkIris, darkLeft, darkRight } = moonIconParameters(age);
   const outlineColor = disabled ? colors.disabledGrey : colors.moonGrey;
   return (
@@ -52,8 +61,8 @@ export const MoonIcon = ({ age, x = 0, y = 0, disabled = false }: Props) => {
       viewBox="0 0 40 40"
       x={x}
       y={y}
-      width="20"
-      height="20"
+      width={width}
+      height={height}
     >
       <g>
         <ellipse
