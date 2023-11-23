@@ -1,4 +1,4 @@
-class TidalEvent {
+export class TidalEvent {
   constructor(timestamp, level, type) {
     this.timeStamp = timestamp;
     this.level = level;
@@ -19,7 +19,3 @@ class TidalEvent {
     return dateTimeMS - otherMS;
   }
 }
-
-module.exports = {
-  TidalEvent,
-};

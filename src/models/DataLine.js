@@ -1,5 +1,5 @@
-const { TidalEvent } = require("./TidalEvent/TidalEvent");
-
+// const { TidalEvent } = require("./TidalEvent/TidalEvent");
+import { TidalEvent } from "./TidalEvent/TidalEvent.js";
 /**
  * 　毎時潮位データ	：	　１～　７２カラム	　３桁×２４時間（０時から２３時）
  * 　年月日	：	７３～　７８カラム	　２桁×３
@@ -8,7 +8,7 @@ const { TidalEvent } = require("./TidalEvent/TidalEvent");
  * 　干潮時刻・潮位	：	１０９～１３６カラム	　時刻４桁（時分）、潮位３桁（ｃｍ）
  */
 
-class Line {
+export class Line {
   #tzOffset;
   #data;
 
@@ -109,7 +109,3 @@ class Line {
     return this.orderedEvents.map((event) => event.asObject);
   }
 }
-
-module.exports = {
-  Line,
-};
