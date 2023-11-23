@@ -1,7 +1,11 @@
-import { readSvsMoonInfoSync } from "../nasa-svs/read-svs-moon-info.js";
-import { fetchHorizonsData } from "./fetch.js";
-import { getCsvLines, parseLine, collateParsedLines } from "./parsers.js";
-import { relativePath, writeJsonFileSync } from "../file/index.js";
+import { readSvsMoonInfoSync } from "./nasa-svs/parse.js";
+import { fetchHorizonsData } from "./horizons-api/fetch.js";
+import {
+  getCsvLines,
+  parseLine,
+  collateParsedLines,
+} from "./horizons-api/parse.js";
+import { relativePath, writeJsonFileSync } from "./file/index.js";
 
 async function parseData(year) {
   const data = await fetchHorizonsData(`${year - 1}-12-31`, `${year}-12-31`);
@@ -18,13 +22,15 @@ async function parseData(year) {
   const [_bin, _script, year] = process.argv;
   if (!year) {
     console.log("Please provide year");
+    process.exit();
   }
   const parsed = parseData(year);
   const outputFilePath = relativePath(
     import.meta.url,
     "..",
-
-    "data"`${year}-shonanko-horizons-svs.json`
+    "data",
+    "main",
+    `${year}-moon-data.json`
   );
 
   writeJsonFileSync(outputFilePath, parsed);

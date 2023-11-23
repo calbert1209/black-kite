@@ -1,5 +1,10 @@
 import * as fs from "node:fs";
-import { relativePath, readJsonFileSync } from "../file";
+import { relativePath, readJsonFileSync } from "../file/index.js";
+
+const jsonFileNameBase = "mooninfo";
+function fileNameForYear(year) {
+  return `${jsonFileNameBase}_${year}.json`;
+}
 
 /**
  * Read and parse SVS Moon information
@@ -10,8 +15,11 @@ import { relativePath, readJsonFileSync } from "../file";
 export const readSvsMoonInfoSync = (year) => {
   const dataFilePath = relativePath(
     import.meta.url,
-    "../../data",
-    `mooninfo_${year}.json`
+    "..",
+    "..",
+    "data",
+    "svs",
+    fileNameForYear(year)
   );
   if (!fs.existsSync(dataFilePath)) {
     throw new Error(`Invalid file path: ${dataFilePath}`);
