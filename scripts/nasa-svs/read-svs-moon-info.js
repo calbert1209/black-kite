@@ -1,14 +1,23 @@
 import * as fs from "node:fs";
-import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { relativePath, readJsonFileSync } from "../file";
 
+/**
+ * Read and parse SVS Moon information
+ * @param {number} year
+ * @returns { Record<string, object> } Record of hourly moon position readings
+ * where the key of each value is an ISO date-time string
+ */
 export const readSvsMoonInfoSync = (year) => {
-  const scriptDirPath = path.dirname(fileURLToPath(import.meta.url));
-  const dataDirPath = path.resolve(scriptDirPath, "..", "data");
-  const inputFilePath = path.resolve(dataDirPath, `mooninfo_${year}.json`);
+  const dataFilePath = relativePath(
+    import.meta.url,
+    "../../data",
+    `mooninfo_${year}.json`
+  );
+  if (!fs.existsSync(dataFilePath)) {
+    throw new Error(`Invalid file path: ${dataFilePath}`);
+  }
 
-  const data = fs.readFileSync(inputFilePath);
-  const lines = JSON.parse(data.toString());
+  const lines = readJsonFileSync(dataFilePath);
 
   return lines.reduce((agg, line) => {
     const isoDateString = new Date(line.time).toISOString();
