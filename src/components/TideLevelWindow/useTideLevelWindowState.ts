@@ -1,15 +1,15 @@
 import { useMemo } from "preact/hooks";
 import { collateDailyTidalEvents } from "../../models/TidalEvent/helpers";
-import { TidalChart } from "../../services/data-fetch";
+import { TidalData } from "../../services/data-fetch";
 
 export const useTideLevelWindowState = (
-  tidalChart: TidalChart,
+  tidalData: TidalData,
   dateStamp: string
 ) => {
   const { hourlyEvents, highEvents, lowEvents, reverseIndex, extremityEvents } =
     useMemo(
-      () => collateDailyTidalEvents(tidalChart[dateStamp]),
-      [tidalChart, dateStamp]
+      () => collateDailyTidalEvents(tidalData[dateStamp]),
+      [tidalData, dateStamp]
     );
 
   return {
