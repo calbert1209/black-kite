@@ -25,13 +25,13 @@ export function App() {
   } = useAppState();
 
   useEffect(() => {
-    fetchTidalData("./2023-tidal-data.json", (data) => {
+    fetchTidalData("./tidal-data.json", (data) => {
       setTidalData(data);
     });
   }, []);
 
   useEffect(() => {
-    fetchLunarData("./2023-lunar-data.json", (chart) => {
+    fetchLunarData("./lunar-data.json", (chart) => {
       setLunarData(chart);
     });
   }, []);
