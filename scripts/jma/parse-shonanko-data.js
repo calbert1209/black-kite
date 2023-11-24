@@ -1,8 +1,6 @@
-import { resolve, join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
 import { Line } from "../../src/models/DataLine.js";
-import { fetchShonankoData } from "./fetch-shonanko-data.js";
-import { writeFileSync } from "node:fs";
+import { fetchShonankoData } from "./fetch.js";
+import { writeJsonFileSync, relativePath } from "../file/index.js";
 
 if (process.argv.length < 3) {
   console.log("Please include year argument");
@@ -23,10 +21,9 @@ const events = lines.reduce((agg, line) => {
   return agg;
 }, {});
 
-const serialized = JSON.stringify(events);
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const dataDirPath = resolve(__dirname, "../data/");
-const jsonFilePath = join(dataDirPath, `${year}-shonanko.json`);
-writeFileSync(jsonFilePath, serialized);
+const filePath = relativePath(
+  import.meta.url,
+  "../../data/",
+  `${year}-shonanko.json`
+);
+writeJsonFileSync(filePath, events);
