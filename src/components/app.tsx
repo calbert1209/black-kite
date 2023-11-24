@@ -3,7 +3,7 @@ import "./app.css";
 import { TideLevelWindow } from "./TideLevelWindow/TideLevelWindow";
 import {
   LunarChart,
-  TidalChart,
+  TidalData,
   fetchLunarData,
   fetchTidalData,
 } from "../services/data-fetch";
@@ -13,7 +13,7 @@ import { LunarPositionWindow } from "./LunarPositionWindow/LunarPositionWindow";
 import { WindowSizeProvider } from "../providers/WindowSizeProvider";
 
 export function App() {
-  const [tidalChart, setTidalChart] = useState<TidalChart | null>(null);
+  const [tidalData, setTidalData] = useState<TidalData | null>(null);
   const [lunarChart, setLunarChart] = useState<LunarChart | null>(null);
 
   const {
@@ -25,13 +25,13 @@ export function App() {
   } = useAppState();
 
   useEffect(() => {
-    fetchTidalData("./2023-shonanko.json", (chart) => {
-      setTidalChart(chart);
+    fetchTidalData("./2023-tidal-data.json", (data) => {
+      setTidalData(data);
     });
   }, []);
 
   useEffect(() => {
-    fetchLunarData("./2023-shonanko-horizons-svs.json", (chart) => {
+    fetchLunarData("./2023-lunar-data.json", (chart) => {
       setLunarChart(chart);
     });
   }, []);
@@ -45,9 +45,9 @@ export function App() {
       ) : (
         <div>loading...</div>
       )}
-      {tidalChart ? (
+      {tidalData ? (
         <TideLevelWindow
-          tidalChart={tidalChart}
+          tidalData={tidalData}
           dateStamp={dateStamp}
           isTodaySelected={isTodaySelected}
         />

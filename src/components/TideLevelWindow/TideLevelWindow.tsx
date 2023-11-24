@@ -1,4 +1,4 @@
-import { TidalChart } from "../../services/data-fetch";
+import { TidalData } from "../../services/data-fetch";
 import { RenderConditionally } from "../../ui/components/RenderConditionally";
 import { TideLevelBarChart } from "./TideLevelBarChart";
 import { useTideLevelWindowState } from "./useTideLevelWindowState";
@@ -7,18 +7,18 @@ import { ExtremityEventList } from "./ExtremityEvent";
 import "./TideLevelWindow.css";
 
 type Props = {
-  tidalChart: TidalChart;
+  tidalData: TidalData;
   isTodaySelected: boolean;
   dateStamp: string;
 };
 
 export const TideLevelWindow = ({
-  tidalChart,
+  tidalData,
   isTodaySelected,
   dateStamp,
 }: Props) => {
   const { hourlyEvents, reverseIndex, extremityEvents } =
-    useTideLevelWindowState(tidalChart, dateStamp);
+    useTideLevelWindowState(tidalData, dateStamp);
 
   return (
     <main>
