@@ -1,6 +1,6 @@
 import * as http from "node:https";
 
-export function fetchShonankoData(year) {
+export function fetchTidalData(year) {
   const options = {
     method: "GET",
     hostname: "www.data.jma.go.jp",
