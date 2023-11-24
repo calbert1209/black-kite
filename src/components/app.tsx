@@ -2,7 +2,7 @@ import { useEffect, useState } from "preact/hooks";
 import "./app.css";
 import { TideLevelWindow } from "./TideLevelWindow/TideLevelWindow";
 import {
-  LunarChart,
+  LunarData,
   TidalData,
   fetchLunarData,
   fetchTidalData,
@@ -14,7 +14,7 @@ import { WindowSizeProvider } from "../providers/WindowSizeProvider";
 
 export function App() {
   const [tidalData, setTidalData] = useState<TidalData | null>(null);
-  const [lunarChart, setLunarChart] = useState<LunarChart | null>(null);
+  const [lunarData, setLunarData] = useState<LunarData | null>(null);
 
   const {
     dateStamp,
@@ -32,7 +32,7 @@ export function App() {
 
   useEffect(() => {
     fetchLunarData("./2023-lunar-data.json", (chart) => {
-      setLunarChart(chart);
+      setLunarData(chart);
     });
   }, []);
 
@@ -40,8 +40,8 @@ export function App() {
     <WindowSizeProvider>
       <h2>{dateStamp}</h2>
       <DateButtonGroup {...{ decrementDate, incrementDate, setToToday }} />
-      {lunarChart ? (
-        <LunarPositionWindow chart={lunarChart} dateStamp={dateStamp} />
+      {lunarData ? (
+        <LunarPositionWindow lunarData={lunarData} dateStamp={dateStamp} />
       ) : (
         <div>loading...</div>
       )}

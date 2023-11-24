@@ -26,13 +26,13 @@ export type LunarEvent = {
   age?: number;
 };
 
-export type LunarChart = Record<string, LunarEvent[]>;
+export type LunarData = Record<string, LunarEvent[]>;
 
 export const fetchLunarData = async (
   url: string,
-  onFetch: (data: LunarChart) => void
+  onFetch: (data: LunarData) => void
 ) => {
   const resp = await window.fetch(url);
-  const json: LunarChart = await resp.json();
+  const json: LunarData = await resp.json();
   onFetch(json);
 };

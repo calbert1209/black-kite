@@ -1,12 +1,12 @@
 import { useHourlyChartDimensions } from "../../providers/WindowSizeProvider";
-import { LunarChart } from "../../services/data-fetch";
+import { LunarData } from "../../services/data-fetch";
 import { MoonIcon } from "../MoonIcon/MoonIcon";
 
 type Props = {
-  chart: LunarChart;
+  lunarData: LunarData;
   dateStamp: string;
 };
-export const LunarPositionWindow = ({ chart, dateStamp }: Props) => {
+export const LunarPositionWindow = ({ lunarData, dateStamp }: Props) => {
   const { scaleY, chartHeight, chartWidth, barWidth } =
     useHourlyChartDimensions();
 
@@ -18,7 +18,7 @@ export const LunarPositionWindow = ({ chart, dateStamp }: Props) => {
       xmlns="http://www.w3.org/2000/svg"
     >
       <rect x="0" y={midpoint} height="1" width={chartWidth} fill="lightgrey" />
-      {chart[dateStamp].map(({ localDate, elevation, age }, index) => (
+      {lunarData[dateStamp].map(({ localDate, elevation, age }, index) => (
         <MoonIcon
           key={localDate}
           age={age ?? 0}
