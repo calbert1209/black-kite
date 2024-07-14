@@ -28,6 +28,15 @@ export function writeJsonFileSync(filePath, data, pretty = false) {
 }
 
 /**
+ * Write data to file as CSV
+ * @param {string} filePath
+ * @param {string[]} data
+ */
+export function writeCsvFileSync(filePath, data) {
+  writeFileSync(filePath, data.join("\n"), { flag: "wx" });
+}
+
+/**
  * Read and parse JSON file
  * @param {string} filePath
  * @returns {any} contents of file, parsed as JSON
