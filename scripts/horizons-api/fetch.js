@@ -68,3 +68,28 @@ export function fetchHorizonsData(startTime, stopTime) {
     req.end();
   });
 }
+
+export function fetchFromOptions(options) {
+  return new Promise((resolve, reject) => {
+    const req = http.request(options, function (res) {
+      const chunks = [];
+
+      res.on("data", function (chunk) {
+        chunks.push(chunk);
+      });
+
+      res.on("error", reject);
+
+      res.on("end", () => {
+        const { statusCode } = res;
+        if (statusCode !== 200) {
+          reject(new Error(`Response status code: ${statusCode}`));
+        }
+        const body = Buffer.concat(chunks);
+        resolve(body.toString());
+      });
+    });
+
+    req.end();
+  });
+}
