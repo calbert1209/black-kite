@@ -39,7 +39,13 @@ export function App() {
   return (
     <WindowSizeProvider>
       <h2>{dateStamp}</h2>
-      <DateButtonGroup {...{ decrementDate, incrementDate, setToToday }} />
+      <DateButtonGroup
+        decrementDate={decrementDate}
+        incrementDate={incrementDate}
+        setToToday={setToToday}
+        jumpBack={() => console.log("jump back from ", dateStamp)}
+        jumpForward={() => console.log("jump forward from ", dateStamp)}
+      />
       {lunarData ? (
         <LunarPositionWindow lunarData={lunarData} dateStamp={dateStamp} />
       ) : (
