@@ -1,5 +1,12 @@
 import { useCallback, useMemo, useState } from "preact/hooks";
-import { addDay, format, isToday, subtractDay } from "../lib/dates";
+import {
+  addDay,
+  format,
+  isToday,
+  jumpToNextFirstDayOfMonth,
+  jumpToPreviousFirstDayOfMonth,
+  subtractDay,
+} from "../lib/dates";
 
 export const useAppState = () => {
   const [currentDate, setCurrentDate] = useState(() => new Date());
@@ -16,6 +23,15 @@ export const useAppState = () => {
   const incrementDate = useCallback(() => setCurrentDate((s) => addDay(s)), []);
   const setToToday = useCallback(() => setCurrentDate(new Date()), []);
 
+  const jumpBack = useCallback(
+    () => setCurrentDate((s) => jumpToPreviousFirstDayOfMonth(s)),
+    []
+  );
+  const jumpForward = useCallback(
+    () => setCurrentDate((s) => jumpToNextFirstDayOfMonth(s)),
+    []
+  );
+
   return {
     currentDate,
     dateStamp,
@@ -23,5 +39,7 @@ export const useAppState = () => {
     decrementDate,
     incrementDate,
     setToToday,
+    jumpBack,
+    jumpForward,
   };
 };

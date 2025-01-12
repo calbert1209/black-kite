@@ -22,6 +22,8 @@ export function App() {
     decrementDate,
     incrementDate,
     setToToday,
+    jumpBack,
+    jumpForward,
   } = useAppState();
 
   useEffect(() => {
@@ -43,8 +45,8 @@ export function App() {
         decrementDate={decrementDate}
         incrementDate={incrementDate}
         setToToday={setToToday}
-        jumpBack={() => console.log("jump back from ", dateStamp)}
-        jumpForward={() => console.log("jump forward from ", dateStamp)}
+        jumpBack={jumpBack}
+        jumpForward={jumpForward}
       />
       {lunarData ? (
         <LunarPositionWindow lunarData={lunarData} dateStamp={dateStamp} />
