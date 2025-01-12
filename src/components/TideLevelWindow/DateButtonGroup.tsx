@@ -1,4 +1,11 @@
 import "./DateButtonGroup.css";
+import {
+  ForwardIcon,
+  BackIcon,
+  JumpForwardIcon,
+  JumpBackIcon,
+  TodayIcon,
+} from "../../assets/icons";
 
 type Props = {
   decrementDate: () => void;
@@ -17,19 +24,19 @@ export const DateButtonGroup = ({
 }: Props) => (
   <div className="date-button-group">
     <button role="button" onClick={jumpBack}>
-      &lt;&lt;
+      <JumpBackIcon />
     </button>
     <button role="button" onClick={decrementDate}>
-      &lt;
+      <BackIcon />
     </button>
     <button role="button" onClick={setToToday}>
-      today
+      <TodayIcon />
     </button>
     <button role="button" onClick={incrementDate}>
-      &gt;
+      <ForwardIcon />
     </button>
     <button role="button" onClick={jumpForward}>
-      &gt;&gt;
+      <JumpForwardIcon />
     </button>
   </div>
 );

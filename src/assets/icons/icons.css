@@ -1,0 +1,3 @@
+.rotate-180 svg {
+  transform: rotateY(180deg);
+}
