@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "data:lunar": "node ./scripts/createLunarDataFile.js",
+    "data:tidal": "node ./scripts/createTidalDataFile.js",
+    "data:year": "node ./scripts/runYearlyDataWorkflow.js"
   },
   "dependencies": {
     "date-fns": "^2.30.0",
