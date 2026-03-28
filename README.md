@@ -5,65 +5,54 @@
 
 # black-kite
 
-Black-kite is a Preact + Vite app for viewing daily tide levels and moon position data.
+Black-kite is a Preact + Vite app for viewing daily tide levels and moon position data. [[Demo](https://calbert1209.github.io/black-kite/)]
 
-The app reads two static JSON assets at runtime:
-
-- `public/tidal-data.json`
-- `public/lunar-data.json`
+<div style="display:flex;justify-content:center">
+<table>
+<tbody>
+<tr>
+<td>
+	<img src="./public/desktop.png" alt="black-kite desktop image" height="200" width="300" />
+</td>
+<td>
+	<img src="./public/mobile.png" alt="black-kite desktop image" height="200" />
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 
 ## Requirements
 
 - Node.js 18+ (20+ recommended)
 - npm 9+
 
-## Local Setup
 
-Install dependencies:
+### Setup
 
-```bash
-npm install
-```
+1. install dependencies via `npm install` or `yarn install`
+2. [Get NASA SVS Moon Info](#get-nasa-svs-moon-info).
+3. generate the current year's data. See [Generate Annual Data](#generate-annual-data) below.
+4. append the current year's data in the files `./public/lunar-data.json` and `./public/tidal-data.json`. See [Publish Data To Runtime Assets](#publish-data-to-runtime-assets) below.
+5. run the dev serve via `npm run dev` or `yarn run dev`
 
-Start the dev server:
+### Get NASA SVS Moon Info
 
-```bash
-npm run dev
-```
+The 
 
-Build for production:
+How to get `mooninfo_<year>.json`:
 
-```bash
-npm run build
-```
+A. Visit NASA's [Scientific Visualization Studio](https://svs.gsfc.nasa.gov/).
 
-Preview the production build locally:
+B. Search for `Moon Phase and Libration`.
 
-```bash
-npm run preview
-```
+C. Open the page for the year you want, for example `Moon Phase and Libration, 2026`.
 
-## How The App Runs
+D. On that yearly page, find the download link for the year's JSON data file.
 
-At startup, the UI fetches the following files from the web root:
+E. Download the file and save it in `data/svs/` as `mooninfo_<year>.json`.
 
-- `./tidal-data.json`
-- `./lunar-data.json`
-
-Because Vite serves `public/` files as root assets, this maps to:
-
-- `public/tidal-data.json`
-- `public/lunar-data.json`
-
-If these files are missing, outdated, or malformed, the UI will not render expected charts/windows.
-
-## Data Pipeline
-
-The repository separates source snapshots and generated files:
-
-- `data/svs/`: NASA SVS moon information snapshots used by lunar generation.
-- `data/main/`: generated year-specific JSON files.
-- `public/`: runtime assets consumed by the app.
+For example, the 2026 page exposes a JSON download for `mooninfo_2026.json`.
 
 ### Generate Annual Data
 
@@ -78,29 +67,6 @@ Example:
 
 ```bash
 npm run data:year -- 2026
-```
-
-Available script map:
-
-```bash
-npm run data:lunar -- <year>
-npm run data:tidal -- <year>
-```
-
-Equivalent direct Node commands:
-
-Generate lunar data for one year:
-
-```bash
-# Writes: data/main/<year>-lunar-data.json
-node ./scripts/createLunarDataFile.js <year>
-```
-
-Generate tidal data for one year:
-
-```bash
-# Writes: data/main/<year>-tidal-data.json
-node ./scripts/createTidalDataFile.js <year>
 ```
 
 ### Publish Data To Runtime Assets
@@ -130,13 +96,6 @@ How to get `mooninfo_<year>.json`:
 5. Download the file and save it in `data/svs/` as `mooninfo_<year>.json`.
 
 For example, the 2026 page exposes a JSON download for `mooninfo_2026.json`.
-
-Process:
-
-- `scripts/createLunarDataFile.js` fetches Horizons data for the year window.
-- `scripts/horizons-api/parse.js` converts raw CSV rows to normalized entries.
-- `scripts/nasa-svs/parse.js` overlays SVS info by UTC timestamp.
-- output is written to `data/main/<year>-lunar-data.json`.
 
 ### 2. Tidal Data
 
