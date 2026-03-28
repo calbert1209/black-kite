@@ -8,7 +8,7 @@
 Black-kite is a Preact + Vite app for viewing daily tide levels and moon position data. [[Demo](https://calbert1209.github.io/black-kite/)]
 
 <p align="center">
-  <img src="./public/desktop.png" alt="black-kite desktop image" height="200" width="300" />
+  <img src="./public/desktop.png" alt="black-kite desktop image" height="400" width="600" />
 </p>
 
 ## Requirements
