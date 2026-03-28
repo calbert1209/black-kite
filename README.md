@@ -1,8 +1,9 @@
-# black-kite
-
 <p align="center">
-	<img src="./public/favicon.svg" alt="black-kite favicon" width="64" height="64" />
+	<img src="./public/favicon.svg" alt="black-kite favicon" width="200" height="200" />
 </p>
+
+
+# black-kite
 
 Black-kite is a Preact + Vite app for viewing daily tide levels and moon position data.
 
