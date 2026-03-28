@@ -5,30 +5,33 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
-      - name: Set Node.js 16.x 🔧
-        uses: actions/setup-node@v3
+      - name: Set Up Node.js 24 🔧
+        uses: actions/setup-node@v6
         with:
-          node-version: 16.x
+          node-version: 24
+          cache: yarn
 
-      - name: Install via Yarn 🧶
-        uses: borales/actions-yarn@v4.2.0
-        with:
-          cmd: install
+      - name: Activate Yarn Classic 🧶
+        run: corepack prepare yarn@1.22.22 --activate
 
-      - name: Build via Yarn 📦
-        uses: borales/actions-yarn@v4.2.0
-        with:
-          cmd: build
+      - name: Install Dependencies 📥
+        run: yarn install --frozen-lockfile
+
+      - name: Build 📦
+        run: yarn build
 
       - name: Deploy 🏗
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        uses: JamesIves/github-pages-deploy-action@v4.8.0
         with:
           branch: gh-pages
           folder: dist
